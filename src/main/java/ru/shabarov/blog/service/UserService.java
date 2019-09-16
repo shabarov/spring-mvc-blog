@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
@@ -17,6 +18,14 @@ public class UserService {
 
     @Autowired
     private AbstractDao userDao;
+
+    @Autowired
+    private User dummyUser;
+
+    @PostConstruct
+    public void init() {
+        logger.info("Dummy user = {}", dummyUser);
+    }
 
     @Transactional
     public Long create(User user) {
