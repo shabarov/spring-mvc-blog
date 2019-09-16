@@ -1,5 +1,7 @@
 package ru.shabarov.blog.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.shabarov.blog.dao.AbstractDao;
 import ru.shabarov.blog.entity.Category;
 import ru.shabarov.blog.entity.Comment;
@@ -21,6 +23,8 @@ import java.util.List;
 
 @Controller
 public class PostController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private PostService postService;
@@ -57,6 +61,7 @@ public class PostController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/index")
     public String showHomePage(Model model) {
+        logger.info("Home page showed");
         List<Post> posts = postService.getAll();
         model.addAttribute("posts", posts);
         return "index";
@@ -67,7 +72,7 @@ public class PostController {
         //Getting Post collection by category id
         List<Post> posts = postService.getByAttributeId(Long.parseLong(categoryId), "category", "categoryId");
         modelMap.put("posts", posts);
-        System.out.println(posts);
+        logger.info("Posts by category = {}", posts);
         //Getting all Category collection
         return "index";
     }
@@ -167,7 +172,7 @@ public class PostController {
         if (isCreate) {
             updatedPostId = postService.create(post);
         } else {
-            System.out.println("Edited post = " + post);
+            logger.info("Edited post = {}", post);
             postService.edit(post);
             updatedPostId = post.getId();
         }

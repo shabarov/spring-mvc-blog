@@ -4,6 +4,8 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Transactional
 public class AbstractDaoImpl<T> implements AbstractDao<T> {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     protected HibernateTemplate hibernateTemplate;
@@ -59,7 +63,7 @@ public class AbstractDaoImpl<T> implements AbstractDao<T> {
 
     public Long getQuantity() {
         String entityType = this.type.getSimpleName();
-        System.out.println(entityType);
+        logger.info("Entity type = {}", entityType);
         Long count = (Long) hibernateTemplate.getSessionFactory()
                 .getCurrentSession()
                 .createQuery("select count(*) from " + entityType).uniqueResult();
@@ -77,7 +81,7 @@ public class AbstractDaoImpl<T> implements AbstractDao<T> {
         try {
             results = criteria.list();
         } catch (HibernateException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return results;
     }

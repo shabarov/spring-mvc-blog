@@ -1,5 +1,7 @@
 package ru.shabarov.blog.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.shabarov.blog.dao.AbstractDao;
 import ru.shabarov.blog.entity.Post;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import java.util.List;
 @Service
 public class PostService {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     @Qualifier(value = "postDao")
     private AbstractDao postDao;
@@ -22,21 +26,21 @@ public class PostService {
         post.setImagePath("DefaultPath");
         Long id = postDao.create(post);
 
-        System.out.println("Post created");
+        logger.info("Post created");
         return id;
     }
 
     @Transactional
     public void delete(Post post) {
         postDao.delete(post);
-        System.out.println("Post deleted");
+        logger.info("Post deleted");
     }
 
     @Transactional
     public void edit(Post post) {
         post.setCurrentDate();
         postDao.edit(post);
-        System.out.println("Post updated (edited)");
+        logger.info("Post updated (edited)");
     }
 
     @Transactional

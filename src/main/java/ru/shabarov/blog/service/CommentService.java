@@ -1,5 +1,7 @@
 package ru.shabarov.blog.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.shabarov.blog.dao.AbstractDao;
 import ru.shabarov.blog.entity.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import java.util.List;
 @Service
 public class CommentService {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     @Qualifier(value = "commentDao")
     AbstractDao commentDao;
@@ -20,21 +24,20 @@ public class CommentService {
     public void create(Comment comment) {
         comment.setCurrentDate();
         commentDao.create(comment);
-
-        System.out.println("Comment created");
+        logger.info("Comment created");
     }
 
     @Transactional
     public void delete(Comment comment) {
         commentDao.delete(comment);
-        System.out.println("Comment deleted");
+        logger.info("Comment deleted");
     }
 
     @Transactional
     public void edit(Comment comment) {
         comment.setCurrentDate();
         commentDao.edit(comment);
-        System.out.println("Comment updated (edited)");
+        logger.info("Comment updated (edited)");
     }
 
     @Transactional

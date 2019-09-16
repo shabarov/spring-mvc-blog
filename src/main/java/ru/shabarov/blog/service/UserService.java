@@ -1,5 +1,7 @@
 package ru.shabarov.blog.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.shabarov.blog.dao.AbstractDao;
 import ru.shabarov.blog.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import java.util.List;
 @Service
 public class UserService {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private AbstractDao userDao;
 
@@ -19,21 +23,21 @@ public class UserService {
         user.setEnabled(Boolean.TRUE);
         Long id = userDao.create(user);
         userDao.executeQuery(String.format("INSERT INTO user_roles (USER_ID, AUTHORITY) VALUES (%d, 'ROLE_USER');", id));
-        System.out.println("User created");
+        logger.info("User created");
         return id;
     }
 
     @Transactional
     public void delete(User user) {
         userDao.delete(user);
-        System.out.println("User deleted");
+        logger.info("User deleted");
     }
 
     @Transactional
     public void edit(User user) {
         user.setEnabled(Boolean.TRUE);
         userDao.edit(user);
-        System.out.println("User updated (edited)");
+        logger.info("User updated (edited)");
     }
 
     @Transactional

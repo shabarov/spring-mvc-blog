@@ -1,5 +1,7 @@
 package ru.shabarov.blog.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.shabarov.blog.entity.Category;
 import ru.shabarov.blog.entity.User;
 import ru.shabarov.blog.service.CategoryService;
@@ -19,6 +21,8 @@ import java.util.List;
 
 @Controller
 public class UserController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private UserService userService;
@@ -46,8 +50,8 @@ public class UserController {
     public String showAccountPage(Model model, Principal principal) {
         if (principal != null) {
             User user = userService.getByName(principal.getName());
-            System.out.println("Principal name = " + principal.getName());
-            System.out.println("User = " + user);
+            logger.info("Principal name = {}", principal.getName());
+            logger.info("User = {}", user);
             if (user != null) {
                 model.addAttribute("user", user);
                 model.addAttribute("isLogged", Boolean.TRUE);
@@ -85,7 +89,7 @@ public class UserController {
             model.addAttribute("username", user.getName());
             return "redirect:/login";
         } else {
-            System.out.println("Edited user = " + user);
+            logger.info("Edited user = {}", user);
             userService.edit(user);
         }
         return "redirect:/account";
