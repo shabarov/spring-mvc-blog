@@ -39,4 +39,6 @@
     <context:component-scan base-package="ru.shabarov.blog.dao"/>
     <context:component-scan base-package="ru.shabarov.blog.service"/>
     <context:component-scan base-package="ru.shabarov.blog.beans"/>
+
+    <context:property-placeholder location="classpath:blog.properties" />
 </beans>

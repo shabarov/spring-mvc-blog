@@ -1,5 +1,8 @@
 package ru.shabarov.blog.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import ru.shabarov.blog.entity.Category;
 import ru.shabarov.blog.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +13,25 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.PostConstruct;
 import java.security.Principal;
 import java.util.List;
 
 @Controller
 public class AdminController {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Value("${blog.test.message}")
+    private String message;
+
     @Autowired
     private CategoryService categoryService;
+
+    @PostConstruct
+    public void init() {
+        logger.info(message);
+    }
 
     @ModelAttribute("categories")
     public List<Category> getAllCategories() {

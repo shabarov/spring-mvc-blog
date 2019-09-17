@@ -4,10 +4,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/blog_spring_mvc"/>
-        <property name="username" value="root"/>
-        <property name="password" value=""/>
+        <property name="driverClassName" value="${blog.db.driverClassName}"/>
+        <property name="url" value="${blog.db.url}"/>
+        <property name="username" value="${blog.db.username}"/>
+        <property name="password" value="${blog.db.password}"/>
     </bean>
 
     <tx:annotation-driven transaction-manager="txManager"/>
