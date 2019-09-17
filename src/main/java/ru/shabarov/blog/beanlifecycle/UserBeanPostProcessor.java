@@ -1,10 +1,11 @@
-package ru.shabarov.blog.beans;
+package ru.shabarov.blog.beanlifecycle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
+import ru.shabarov.blog.dao.AbstractDaoImpl;
 import ru.shabarov.blog.entity.User;
 
 @Component
@@ -16,7 +17,7 @@ public class UserBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        if (bean instanceof User) {
+        if (bean instanceof AbstractDaoImpl) {
             logger.info("Before initialization, bean = {}", beanName);
         }
         return bean;

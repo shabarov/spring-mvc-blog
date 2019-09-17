@@ -2,10 +2,12 @@ package ru.shabarov.blog.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import ru.shabarov.blog.dao.AbstractDao;
 import ru.shabarov.blog.entity.Category;
 import ru.shabarov.blog.entity.Comment;
 import ru.shabarov.blog.entity.Post;
+import ru.shabarov.blog.event.CustomApplicationEvent;
 import ru.shabarov.blog.service.PostService;
 import ru.shabarov.blog.validation.PostValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,9 @@ public class PostController {
     @Autowired
     @Qualifier(value = "postValidator")
     private PostValidator postValidator;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @RequestMapping("/")
     public String initialLoad() {
@@ -116,6 +121,8 @@ public class PostController {
             return "createOrEditPost";
         }
         postService.create(post);
+        applicationEventPublisher.publishEvent(
+                new CustomApplicationEvent(this, "Post created, title = " + post.getTitle()));
         return "redirect:/index";
     }
 
@@ -179,6 +186,8 @@ public class PostController {
         return "redirect:/admin/posts#postId" + updatedPostId;
     }
 
+    // Transform category ID referenced from posts.jsp form to Category object and
+    // sets it to the appropriate field of Post object
     @InitBinder
     public void initBinder(ServletRequestDataBinder binder) {
         binder.registerCustomEditor(Category.class, "category", new PropertyEditorSupport() {

@@ -1,4 +1,4 @@
-package ru.shabarov.blog.beans;
+package ru.shabarov.blog.beanlifecycle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

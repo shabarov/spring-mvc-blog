@@ -3,6 +3,7 @@ package ru.shabarov.blog.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.shabarov.blog.dao.AbstractDao;
+import ru.shabarov.blog.entity.Contact;
 import ru.shabarov.blog.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +23,13 @@ public class UserService {
     @Autowired
     private User dummyUser;
 
+    @Autowired
+    private Contact userContact;
+
     @PostConstruct
     public void init() {
         logger.info("Dummy user = {}", dummyUser);
+        logger.info("User contact = {}", userContact);
     }
 
     @Transactional

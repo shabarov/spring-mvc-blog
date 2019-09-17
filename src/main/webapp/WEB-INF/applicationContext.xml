@@ -30,15 +30,27 @@
         </constructor-arg>
     </bean>
 
-    <bean id="customBeanFactoryPostProcessor" class="ru.shabarov.blog.beans.CustomBeanFactoryPostProcessor"/>
+    <bean id="customBeanFactoryPostProcessor" class="ru.shabarov.blog.beanlifecycle.CustomBeanFactoryPostProcessor"/>
+    <bean id="dummyUserFactoryBean" class="ru.shabarov.blog.beanlifecycle.DummyUserFactoryBean"/>
 
-    <bean id="dummyUserFactoryBean" class="ru.shabarov.blog.beans.DummyUserFactoryBean"/>
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="ru.shabarov.blog.entity.User">
+                    <bean id="userEditor" class="ru.shabarov.blog.bind.UserEditor"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
 
-<!--    <bean id="userBeanPostProcessor" class="ru.shabarov.blog.beans.UserBeanPostProcessor"/>-->
+    <bean id="userContacts" class="ru.shabarov.blog.entity.Contact">
+        <property name="contact" value="Mike-mike@mail.com"/>
+    </bean>
 
     <context:component-scan base-package="ru.shabarov.blog.dao"/>
     <context:component-scan base-package="ru.shabarov.blog.service"/>
-    <context:component-scan base-package="ru.shabarov.blog.beans"/>
+    <context:component-scan base-package="ru.shabarov.blog.beanlifecycle"/>
+    <context:component-scan base-package="ru.shabarov.blog.event"/>
 
     <context:property-placeholder location="classpath:blog.properties" />
 </beans>

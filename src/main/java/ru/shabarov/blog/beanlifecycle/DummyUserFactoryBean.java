@@ -1,4 +1,4 @@
-package ru.shabarov.blog.beans;
+package ru.shabarov.blog.beanlifecycle;
 
 import org.springframework.beans.factory.FactoryBean;
 import ru.shabarov.blog.entity.User;
