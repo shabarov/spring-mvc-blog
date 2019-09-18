@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import ru.shabarov.blog.entity.Post;
@@ -17,16 +18,13 @@ import java.util.List;
 /**
  * Dao for post likes based on Spring jdbc template
  */
-public class PostLikeDao implements AbstractDao<PostLike> {
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+public class PostLikeDao extends JdbcDaoSupport implements AbstractDao<PostLike> {
 
     @Override
     public Long create(PostLike entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         final String sql = "INSERT INTO post_likes(postId_fk, userId_fk) VALUES (?, ?)";
-        jdbcTemplate.update(new PreparedStatementCreator() {
+        getJdbcTemplate().update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -46,9 +44,9 @@ public class PostLikeDao implements AbstractDao<PostLike> {
         User user = entity.getUser();
         if (user != null) {
             final String sql = sqlPostOnly + " AND userId_fk = ?";
-            jdbcTemplate.update(sql, new Object[]{post.getId(), user.getUserId()});
+            getJdbcTemplate().update(sql, new Object[]{post.getId(), user.getUserId()});
         } else {
-            jdbcTemplate.update(sqlPostOnly, new Object[]{post.getId()});
+            getJdbcTemplate().update(sqlPostOnly, new Object[]{post.getId()});
         }
     }
 
@@ -75,7 +73,7 @@ public class PostLikeDao implements AbstractDao<PostLike> {
     @Override
     public List<PostLike> getByAttributeId(Long id, String attribute, String attributeIdName) {
         if ("postId_fk".equals(attributeIdName)) {
-            return jdbcTemplate.query("SELECT * FROM post_likes a where a.postId_fk = ?",
+            return getJdbcTemplate().query("SELECT * FROM post_likes a where a.postId_fk = ?",
                     new Object[]{id}, new RowMapper<PostLike>() {
                 @Override
                 public PostLike mapRow(ResultSet resultSet, int i) throws SQLException {

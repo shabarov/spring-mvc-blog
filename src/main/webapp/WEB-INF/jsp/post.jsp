@@ -5,6 +5,7 @@
     <link href="<c:url value="/resources/css/hearts.css"/>" rel="stylesheet" type="text/css" />
     <script>
         function createLike(postId) {
+            // TODO: disable checkbox for non-authorized users
             var checkBox = document.getElementById("likeCheckbox");
             var request = new XMLHttpRequest();
             var path = '';

@@ -41,8 +41,4 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean name="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <constructor-arg ref="dataSource"/>
-    </bean>
-
 </beans>
