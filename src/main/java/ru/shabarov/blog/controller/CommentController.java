@@ -76,7 +76,7 @@ public class CommentController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/admin/comment/delete/{commentId}")
-    public String updateCategory(@PathVariable Long commentId, Model model) {
+    public String deleteComment(@PathVariable Long commentId, Model model) {
         Comment comment = commentService.getById(commentId);
         comment.getPost().getComments().remove(comment);
         commentService.delete(comment);

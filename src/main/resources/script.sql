@@ -28,6 +28,13 @@ CREATE TABLE comments (
 	postId_fk INT(11) NOT NULL ,
 	PRIMARY KEY (commentId)
 ) ;
+
+CREATE TABLE post_likes (
+	likeId INT(11) NOT NULL AUTO_INCREMENT,
+	postId_fk INT(11) NOT NULL ,
+	userId_fk INT(11) NOT NULL ,
+	PRIMARY KEY (likeId)
+) ;
 	
 ALTER TABLE posts ADD CONSTRAINT CONSTR_POST_CATEGORY FOREIGN KEY (categoryId_fk) REFERENCES categories (categoryId);
 ALTER TABLE comments ADD CONSTRAINT CONSTR_COMMENT_POST FOREIGN KEY (postId_fk) REFERENCES posts (postId);
@@ -75,5 +82,8 @@ INSERT INTO users (USERNAME,PASSWORD,EMAIL,ENABLED) VALUES ('user', 'user', 'use
 INSERT INTO user_roles (USER_ID,AUTHORITY) VALUES (1, 'ROLE_USER');
 INSERT INTO user_roles (USER_ID,AUTHORITY) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO user_roles (USER_ID,AUTHORITY) VALUES (2, 'ROLE_USER');
+
+INSERT INTO post_likes (likeId,postId_fk,userId_fk) VALUES (1, 1, 1);
+INSERT INTO post_likes (likeId,postId_fk,userId_fk) VALUES (2, 1, 2);
 
 COMMIT;

@@ -1,4 +1,30 @@
 <%@include file="header.jsp" %>
+
+<head>
+    <title>Posts</title>
+    <link href="<c:url value="/resources/css/hearts.css"/>" rel="stylesheet" type="text/css" />
+    <script>
+        function createLike(postId) {
+            var checkBox = document.getElementById("likeCheckbox");
+            var request = new XMLHttpRequest();
+            var path = '';
+            var likeCounter = document.getElementById("likeCounter");
+            if (checkBox.checked == true){
+                path = "/like/create/post/" + postId;
+                likeCounter.textContent = parseInt(likeCounter.textContent) + 1;
+            } else {
+                path = "/like/delete/post/" + postId;
+                var currentLikesCount = parseInt(likeCounter.textContent);
+                if (currentLikesCount > 0) {
+                    likeCounter.textContent = parseInt(likeCounter.textContent) - 1;
+                }
+            }
+            request.open("POST", path);
+            request.send();
+        }
+    </script>
+</head>
+
 <html>
 <body>
 
@@ -53,6 +79,19 @@
                                                                                  alt="image"/></a>
 
                 <p>${post.body}</p>
+
+                <label class="heart">Like <b id="likeCounter">${likeCount}</b>
+                    <c:choose>
+                        <c:when test="${isLiked}">
+                            <input id="likeCheckbox" type="checkbox" checked onClick="createLike(${post.id})">
+                        </c:when>
+                        <c:otherwise>
+                            <input id="likeCheckbox" type="checkbox" onClick="createLike(${post.id})">
+                        </c:otherwise>
+                    </c:choose>
+                    <span class="checkmark"></span>
+                </label>
+
 
             </div>
 

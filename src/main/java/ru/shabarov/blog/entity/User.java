@@ -27,6 +27,10 @@ public class User {
 
     }
 
+    public User(Long userId) {
+        this.userId = userId;
+    }
+
     public User(String name, String password, String email, Boolean isEnabled) {
         this.name = name;
         this.password = password;

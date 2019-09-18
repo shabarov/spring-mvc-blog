@@ -2,6 +2,8 @@ package ru.shabarov.blog.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import ru.shabarov.blog.dao.AbstractDao;
 import ru.shabarov.blog.entity.Contact;
 import ru.shabarov.blog.entity.User;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -77,8 +80,17 @@ public class UserService {
     @Transactional
     public User getByName(String name) {
         List<User> userList = userDao.getByName(name);
+        logger.info("User list = {}", userList);
         if (userList != null && userList.size() == 1) {
             return userList.get(0);
+        }
+        return null;
+    }
+
+    public User getCurrentUser() {
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+        if (!(principal instanceof AnonymousAuthenticationToken)) {
+            return this.getByName(principal.getName());
         }
         return null;
     }

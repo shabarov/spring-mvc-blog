@@ -2,22 +2,25 @@ package ru.shabarov.blog.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationEventPublisher;
-import ru.shabarov.blog.dao.AbstractDao;
-import ru.shabarov.blog.entity.Category;
-import ru.shabarov.blog.entity.Comment;
-import ru.shabarov.blog.entity.Post;
-import ru.shabarov.blog.event.CustomApplicationEvent;
-import ru.shabarov.blog.service.PostService;
-import ru.shabarov.blog.validation.PostValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
+import ru.shabarov.blog.dao.AbstractDao;
+import ru.shabarov.blog.entity.Category;
+import ru.shabarov.blog.entity.Comment;
+import ru.shabarov.blog.entity.Post;
+import ru.shabarov.blog.entity.PostLike;
+import ru.shabarov.blog.event.CustomApplicationEvent;
+import ru.shabarov.blog.service.PostLikesService;
+import ru.shabarov.blog.service.PostService;
+import ru.shabarov.blog.service.UserService;
+import ru.shabarov.blog.validation.PostValidator;
 
 import java.beans.PropertyEditorSupport;
 import java.security.Principal;
@@ -36,8 +39,10 @@ public class PostController {
     private AbstractDao categoryDao;
 
     @Autowired
-    @Qualifier(value = "commentDao")
-    private AbstractDao commentDao;
+    private PostLikesService postLikesService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     @Qualifier(value = "postValidator")
@@ -83,11 +88,15 @@ public class PostController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/post/{postId}")
-    public String showPostByIdPage(@PathVariable("postId") Long postId, ModelMap modelMap) {
+    public String showPostByIdPage(@PathVariable("postId") Long postId, ModelMap modelMap, Principal principal) {
         //Getting post by id
-        Post post = (Post) postService.getById(postId);
+        Post post = postService.getById(postId);
+        List<PostLike> likesForPost = postLikesService.getLikesForPost(post);
+        Boolean likedByCurrentUser = postLikesService.isLikedByCurrentUser(likesForPost);
         modelMap.put("post", post);
         modelMap.put("comment", new Comment());
+        modelMap.put("isLiked", likedByCurrentUser);
+        modelMap.put("likeCount", likesForPost.size());
         return "post";
     }
 
@@ -150,6 +159,7 @@ public class PostController {
             problem, when entity is deleted, but presents in associations*/
             post.getCategory().getPosts().remove(post);
             postService.delete(post);
+            postLikesService.deleteLikesForPost(post);
         }
         return "redirect:/admin/posts";
     }

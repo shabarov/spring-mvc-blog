@@ -41,6 +41,10 @@ public class Post {
     public Post() {
     }
 
+    public Post(Long id) {
+        this.postId = id;
+    }
+
     public Post(Long id, String title, String summary, String body, String postDate, Category category, String imagePath) {
         this.postId = id;
         this.title = title;

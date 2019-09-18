@@ -37,6 +37,8 @@
         </constructor-arg>
     </bean>
 
+    <bean id="postLikeDao" class="ru.shabarov.blog.dao.PostLikeDao"/>
+
     <bean id="customBeanFactoryPostProcessor" class="ru.shabarov.blog.beanlifecycle.CustomBeanFactoryPostProcessor"/>
     <bean id="dummyUserFactoryBean" class="ru.shabarov.blog.beanlifecycle.DummyUserFactoryBean"/>
 
