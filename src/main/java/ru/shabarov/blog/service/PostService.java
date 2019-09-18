@@ -20,6 +20,9 @@ public class PostService {
     @Qualifier(value = "postDao")
     private AbstractDao postDao;
 
+    @Autowired
+    private PostLikesService postLikesService;
+
     @Transactional
     public Long create(Post post) {
         post.setCurrentDate();
@@ -33,6 +36,7 @@ public class PostService {
     @Transactional
     public void delete(Post post) {
         postDao.delete(post);
+        postLikesService.deleteLikesForPost(post);
         logger.info("Post deleted");
     }
 

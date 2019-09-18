@@ -159,7 +159,6 @@ public class PostController {
             problem, when entity is deleted, but presents in associations*/
             post.getCategory().getPosts().remove(post);
             postService.delete(post);
-            postLikesService.deleteLikesForPost(post);
         }
         return "redirect:/admin/posts";
     }

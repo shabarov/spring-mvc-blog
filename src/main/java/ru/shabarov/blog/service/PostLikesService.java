@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.shabarov.blog.dao.AbstractDao;
 import ru.shabarov.blog.entity.Post;
 import ru.shabarov.blog.entity.PostLike;
@@ -50,6 +51,7 @@ public class PostLikesService {
         postLikeDao.delete(like);
     }
 
+    @Transactional
     public void deleteLike(Post post) {
         User user = userService.getCurrentUser();
         if (user == null) {
@@ -59,6 +61,7 @@ public class PostLikesService {
         postLikeDao.delete(new PostLike(post, user));
     }
 
+    @Transactional
     public void createLike(Post post) {
         User user = userService.getCurrentUser();
         if (user == null) {
