@@ -22,6 +22,7 @@ import ru.shabarov.blog.service.PostService;
 import ru.shabarov.blog.service.UserService;
 import ru.shabarov.blog.validation.PostValidator;
 
+import javax.validation.Valid;
 import java.beans.PropertyEditorSupport;
 import java.security.Principal;
 import java.util.List;
@@ -120,8 +121,8 @@ public class PostController {
         return "redirect:/index";
     }*/
 
-    @RequestMapping(method = RequestMethod.POST, value = "/updatepost/create")
-    public String createPost(@ModelAttribute("post") Post post,
+    @RequestMapping(method = RequestMethod.POST, value = {"/updatepost/create", "/updatepost/edit"})
+    public String createPost(@Valid @ModelAttribute("post") Post post,
                              BindingResult result) {
         postValidator.validate(post, result);
         boolean hasErrors = result.hasErrors();

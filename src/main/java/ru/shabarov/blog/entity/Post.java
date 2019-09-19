@@ -1,6 +1,7 @@
 package ru.shabarov.blog.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -17,6 +18,7 @@ public class Post {
     private Long postId;
 
     @Column(name = "title", nullable = false, length = 255)
+    @Size(min=5, max=20, message = "Post title must be between 5 and 20 chars long.")
     private String title;
 
     @Column(name = "summary", nullable = false)

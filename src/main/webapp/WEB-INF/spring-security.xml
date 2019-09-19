@@ -23,6 +23,7 @@
         <intercept-url pattern="/admin*" access="ROLE_ADMIN"/>
         <intercept-url pattern="/newpost" access="ROLE_ADMIN"/>
         <intercept-url pattern="/updatepost/create" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/updatepost/edit" access="ROLE_ADMIN"/>
         <intercept-url pattern="/admin/posts*" access="ROLE_ADMIN"/>
         <intercept-url pattern="/admin/post*" access="ROLE_ADMIN"/>
         <intercept-url pattern="/admin/categories*" access="ROLE_ADMIN"/>
@@ -31,6 +32,7 @@
 
         <intercept-url pattern="/newpost" access="ROLE_USER"/>
         <intercept-url pattern="/updatepost/create" access="ROLE_USER"/>
+        <intercept-url pattern="/updatepost/edit" access="ROLE_USER"/>
         <intercept-url pattern="/newcomment*" access="ROLE_USER"/>
 
         <form-login login-page="/login"
