@@ -141,7 +141,11 @@
                 <div class="cleaner_h10"></div>
 
                 <label for="text">Category:</label><br>
-                <form:select path="category" items="${categories}" itemLabel="name" itemValue="id"/>
+                <form:select path="category" items="${categories}" itemLabel="name" itemValue="id"/><br>
+
+                <label for="text">Image path:</label><br>
+                <form:input path="imagePath" type="text" id="imagePath" name="imagePath" class="required input_field" />
+
                 <input type="submit" value="Submit">
 
             </form:form>

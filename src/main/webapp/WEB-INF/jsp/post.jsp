@@ -76,8 +76,8 @@
                 ${post.postDate} | <strong>Author:</strong> John | <strong>Category:</strong>
                 <a href="/posts/${post.category.id}">${post.category.name}</a>
 
-                <a href="http://www.templatemo.com/page/1" target="_parent"><img src="/resources/images/templatemo_image_01.jpg"
-                                                                                 alt="image"/></a>
+                <a href="http://www.templatemo.com/page/1" target="_parent"><img src="/image${post.imagePath}" alt="no image"/></a>
+
 
                 <p>${post.body}</p>
 

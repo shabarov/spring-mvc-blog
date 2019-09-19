@@ -2,13 +2,15 @@ package ru.shabarov.blog.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.shabarov.blog.dao.AbstractDao;
-import ru.shabarov.blog.entity.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import ru.shabarov.blog.dao.AbstractDao;
+import ru.shabarov.blog.entity.Post;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -23,10 +25,14 @@ public class PostService {
     @Autowired
     private PostLikesService postLikesService;
 
+    @Autowired
+    private ImageService imageService;
+
     @Transactional
-    public Long create(Post post) {
+    public Long create(Post post, MultipartFile image) throws IOException {
+        String imagePath = imageService.saveImage(image);
+        post.setImagePath(imagePath);
         post.setCurrentDate();
-        post.setImagePath("DefaultPath");
         Long id = postDao.create(post);
 
         logger.info("Post created");
@@ -34,6 +40,7 @@ public class PostService {
     }
 
     @Transactional
+//    @Transactional(propagation = Propagation.MANDATORY, isolation = Isolation.SERIALIZABLE)
     public void delete(Post post) {
         postDao.delete(post);
         postLikesService.deleteLikesForPost(post);

@@ -114,12 +114,13 @@ public class Post {
                 Objects.equals(title, post.title) &&
                 Objects.equals(summary, post.summary) &&
                 Objects.equals(body, post.body) &&
-                Objects.equals(postDate, post.postDate);
+                Objects.equals(postDate, post.postDate) &&
+                Objects.equals(imagePath, post.imagePath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(postId, title, summary, body, postDate);
+        return Objects.hash(postId, title, summary, body, postDate, imagePath);
     }
 
     public Set<Comment> getComments() {
@@ -154,6 +155,9 @@ public class Post {
                 ", summary='" + summary + '\'' +
                 ", body='" + body + '\'' +
                 ", postDate='" + postDate + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", category=" + category +
+                ", comments=" + comments +
                 '}';
     }
 }

@@ -54,7 +54,8 @@
                     <h2><a href="/post/${post.id}">${post.title}</a></h2>
                         ${post.postDate} | <strong>Author:</strong> John | <strong>Category:</strong> <a
                         href="/blog?category=${post.category.id}">${post.category.name}</a>
-                    <img src="/resources/images/templatemo_image_01.jpg" alt="image 1"/>
+                    <img src="/image${post.imagePath}" alt="no image"/></a>
+
                     <p>${post.summary}</p>
                     <a href="/post/${post.id}">Read more...</a>
 

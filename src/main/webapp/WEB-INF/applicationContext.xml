@@ -13,6 +13,11 @@
 
     <context:annotation-config/>
 
+    <context:property-placeholder location="classpath:blog.properties" />
+
+<!--    <bean id="propertySourcesPlaceholderConfigurer"-->
+<!--          class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer"/>-->
+
     <bean id="categoryDao" class="ru.shabarov.blog.dao.AbstractDaoImpl">
         <constructor-arg>
             <value>ru.shabarov.blog.entity.Category</value>
@@ -60,13 +65,13 @@
 
     <bean id="daoLoggingAspect" class="ru.shabarov.blog.aspect.DaoLoggingAspect"/>
 
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
     <context:component-scan base-package="ru.shabarov.blog.dao"/>
     <context:component-scan base-package="ru.shabarov.blog.service"/>
     <context:component-scan base-package="ru.shabarov.blog.beanlifecycle"/>
     <context:component-scan base-package="ru.shabarov.blog.event"/>
     <context:component-scan base-package="ru.shabarov.blog.config"/>
-
-    <context:property-placeholder location="classpath:blog.properties" />
 
     <aop:aspectj-autoproxy />
 </beans>

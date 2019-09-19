@@ -11,12 +11,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.shabarov.blog.dao.AbstractDao;
 import ru.shabarov.blog.entity.Category;
 import ru.shabarov.blog.entity.Comment;
 import ru.shabarov.blog.entity.Post;
 import ru.shabarov.blog.entity.PostLike;
 import ru.shabarov.blog.event.CustomApplicationEvent;
+import ru.shabarov.blog.service.ImageService;
 import ru.shabarov.blog.service.PostLikesService;
 import ru.shabarov.blog.service.PostService;
 import ru.shabarov.blog.service.UserService;
@@ -24,6 +26,7 @@ import ru.shabarov.blog.validation.PostValidator;
 
 import javax.validation.Valid;
 import java.beans.PropertyEditorSupport;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -51,6 +54,9 @@ public class PostController {
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
+
+    @Autowired
+    private ImageService imageService;
 
     @RequestMapping("/")
     public String initialLoad() {
@@ -123,14 +129,15 @@ public class PostController {
 
     @RequestMapping(method = RequestMethod.POST, value = {"/updatepost/create", "/updatepost/edit"})
     public String createPost(@Valid @ModelAttribute("post") Post post,
-                             BindingResult result) {
+                             BindingResult result,
+                             @RequestParam(value = "file") MultipartFile image) throws IOException {
         postValidator.validate(post, result);
         boolean hasErrors = result.hasErrors();
 
         if (hasErrors) {
             return "createOrEditPost";
         }
-        postService.create(post);
+        postService.create(post, image);
         applicationEventPublisher.publishEvent(
                 new CustomApplicationEvent(this, "Post created, title = " + post.getTitle()));
         return "redirect:/index";
@@ -168,7 +175,7 @@ public class PostController {
     public String updatePost(@ModelAttribute("post") Post post,
                              @PathVariable String action,
                              BindingResult result,
-                             Model model) {
+                             Model model) throws IOException {
         postValidator.validate(post, result);
         boolean hasErrors = result.hasErrors();
         Boolean isCreate = action.equalsIgnoreCase("create");
@@ -187,7 +194,7 @@ public class PostController {
 
         Long updatedPostId = null;
         if (isCreate) {
-            updatedPostId = postService.create(post);
+            updatedPostId = postService.create(post, null);
         } else {
             logger.info("Edited post = {}", post);
             postService.edit(post);

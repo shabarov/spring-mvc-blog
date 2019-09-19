@@ -58,7 +58,7 @@
 
             <form:form commandName="post"
                        action="${path}"
-                       method="POST">
+                       method="POST" enctype="multipart/form-data">
                 <form:errors path="*" cssClass="errorblock" element="div" />
                 <c:choose>
                     <c:when test="${not isCreate}">
@@ -92,8 +92,12 @@
                 <form:select path="category" items="${categories}" itemLabel="name" itemValue="id"/>
                 <div class="cleaner_h10"></div>
 
+                <label for="text">Please select a file to upload : <br><input type="file" name="file" />
+
                 <input type="submit" value="Submit">
+
             </form:form>
+
     </div>
 
     <div class="cleaner"></div>
