@@ -1,5 +1,7 @@
 package ru.shabarov.blog.image;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.annotation.WebInitParam;
@@ -14,11 +16,14 @@ import java.net.URLDecoder;
 //        initParams = {@WebInitParam(name = "basePath", value = "/tmp")})
 public class ImageServlet extends HttpServlet {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private static final int DEFAULT_BUFFER_SIZE = 10240;
 
     //TODO: @Value doesn't work
-//    @Value("${blog.image.basePath}")
-    private String basePath = "/tmp";
+    @Value("${blog.image.basePath}")
+    private String basePath = "/var/lib/spring-mvc-blog";
+//    private String basePath;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
@@ -27,6 +32,7 @@ public class ImageServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+        logger.info("Base path = {}", basePath);
         File file = new File(basePath, URLDecoder.decode(requestedFile, "UTF-8"));
 
         if (!file.exists()) {

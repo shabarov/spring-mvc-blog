@@ -65,13 +65,16 @@
 
     <bean id="daoLoggingAspect" class="ru.shabarov.blog.aspect.DaoLoggingAspect"/>
 
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="500000"/>
+    </bean>
 
     <context:component-scan base-package="ru.shabarov.blog.dao"/>
     <context:component-scan base-package="ru.shabarov.blog.service"/>
     <context:component-scan base-package="ru.shabarov.blog.beanlifecycle"/>
     <context:component-scan base-package="ru.shabarov.blog.event"/>
     <context:component-scan base-package="ru.shabarov.blog.config"/>
+    <context:component-scan base-package="ru.shabarov.blog.image"/>
 
     <aop:aspectj-autoproxy />
 </beans>

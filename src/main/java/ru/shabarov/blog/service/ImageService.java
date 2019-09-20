@@ -1,5 +1,6 @@
 package ru.shabarov.blog.service;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,15 +24,19 @@ public class ImageService {
     private static final int TARGET_IMAGE_WIDTH = 420;
 
     //TODO: @Value doesn't work
-//    @Value("${blog.image.relativeImagePath}")
+    @Value("${blog.image.relativeImagePath}")
     private String relativeImagePath = "/images";
+//    private String relativeImagePath;
 
-//    @Value("${blog.image.basePath}")
-    private String basePath = "/tmp";
+    @Value("${blog.image.basePath}")
+    private String basePath = "/var/lib/spring-mvc-blog";
+//    private String basePath;
 
     public String saveImage(MultipartFile file) throws IOException {
         String pathToFile = "No image";
         if (file != null && !file.isEmpty()) {
+//            File image = new File(pathToFile);
+//            FileUtils.writeByteArrayToFile(image, file.getBytes());
             try (InputStream is = new ByteArrayInputStream(file.getBytes())) {
                 BufferedImage src = ImageIO.read(is);
                 pathToFile = String.format("%s/image-%d.png", relativeImagePath, new Date().getTime());
