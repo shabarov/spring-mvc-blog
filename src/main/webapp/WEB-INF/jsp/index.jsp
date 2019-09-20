@@ -1,4 +1,5 @@
 <%@include file="header.jsp" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <body>
 
@@ -21,6 +22,7 @@
             <c:choose>
                 <c:when test="${username ne null}">
                     <h5>Logged in as: <strong>'${username}'</strong></h5>
+                    <h6>Hello, <sec:authentication property="principal.username" />!</h6>
                     <a href="<c:url value="/j_spring_security_logout" />" id="1">Logout</a>
                 </c:when>
                 <c:otherwise>

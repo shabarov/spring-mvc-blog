@@ -6,6 +6,8 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
+    <global-method-security secured-annotations="enabled" jsr250-annotations="enabled" pre-post-annotations="enabled"/>
+
     <!--<http>
         <intercept-url pattern="/admin*" access="ROLE_USER"/>
         <http-basic/>
@@ -19,21 +21,20 @@
         </authentication-provider>
     </authentication-manager>-->
 
-    <http auto-config="true">
-        <intercept-url pattern="/admin*" access="ROLE_ADMIN"/>
-        <intercept-url pattern="/newpost" access="ROLE_ADMIN"/>
-        <intercept-url pattern="/updatepost/create" access="ROLE_ADMIN"/>
-        <intercept-url pattern="/updatepost/edit" access="ROLE_ADMIN"/>
-        <intercept-url pattern="/admin/posts*" access="ROLE_ADMIN"/>
-        <intercept-url pattern="/admin/post*" access="ROLE_ADMIN"/>
-        <intercept-url pattern="/admin/categories*" access="ROLE_ADMIN"/>
-        <intercept-url pattern="/admin/category*" access="ROLE_ADMIN"/>
-        <intercept-url pattern="/newcomment*" access="ROLE_ADMIN"/>
+    <http auto-config="true" use-expressions="true">
+        <intercept-url pattern="/admin*" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/admin/posts*" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/admin/post*" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/admin/categories*" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/admin/category*" access="hasRole('ROLE_ADMIN')"/>
 
-        <intercept-url pattern="/newpost" access="ROLE_USER"/>
-        <intercept-url pattern="/updatepost/create" access="ROLE_USER"/>
-        <intercept-url pattern="/updatepost/edit" access="ROLE_USER"/>
-        <intercept-url pattern="/newcomment*" access="ROLE_USER"/>
+        <intercept-url pattern="/updatepost/create" access="hasAnyRole('ROLE_ADMIN, ROLE_USER')"/>
+        <intercept-url pattern="/updatepost/edit" access="hasAnyRole('ROLE_ADMIN, ROLE_USER')"/>
+        <intercept-url pattern="/newpost" access="hasAnyRole('ROLE_ADMIN, ROLE_USER')"/>
+
+        <intercept-url pattern="/newcomment/*" access="isAuthenticated()"/>
+
+<!--        <intercept-url pattern="/like/*" access="isAuthenticated()"/>-->
 
         <form-login login-page="/login"
                     default-target-url="/index"

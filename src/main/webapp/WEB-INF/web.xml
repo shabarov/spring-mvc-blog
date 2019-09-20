@@ -37,6 +37,7 @@
         <url-pattern>/newpost</url-pattern>
         <url-pattern>/admin/*</url-pattern>
         <url-pattern>/newcomment/*</url-pattern>
+        <url-pattern>/like/*</url-pattern>
     </filter-mapping>
 
     <context-param>

@@ -78,6 +78,13 @@
                         </td>
                     </tr>
                     <tr>
+                        <th></th>
+                        <td>
+                            <input id="remember_me" name="_spring_security_remember_me" type="checkbox"/>
+                            <label for="remember_me" class="inline">Remember me</label>
+                        </td>
+                    </tr>
+                    <tr>
                         <td colspan='2'>
                             <input name="submit" type="submit" value="Login"/>
                         </td>

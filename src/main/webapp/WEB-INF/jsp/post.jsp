@@ -1,4 +1,5 @@
 <%@include file="header.jsp" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <head>
     <title>Posts</title>
@@ -131,33 +132,37 @@
 
         <%--<a href="/newcomment?post=${post.id}">Leave a comment...</a>--%>
 
-        <div id="comment_form">
-            <h3>Leave a comment</h3>
+        <!-- Only for authorized users -->
+        <sec:authorize access="isAuthenticated()">
+            <div id="comment_form">
+                <h3>Leave a comment</h3>
+                <form:form commandName="comment"
+                           action="/newcomment/${post.id}"
+                           method="POST">
+                    <form:errors path="*" cssClass="errorblock" element="div" />
+                    <div class="form_row">
+                        <label><strong>Name</strong> (required)</label>
+                        <br/>
+                        <form:input path="author"/>
+                    </div>
+                    <div class="form_row">
+                        <label><strong>Email</strong> (required, will not be published)</label>
+                        <br/>
+                        <form:input path="email"/>
+                    </div>
+                    <div class="form_row">
+                        <label><strong>Comment</strong></label>
+                        <br/>
+                        <form:textarea path="body" rows="10" cols="60"/>
+                    </div>
+                    <input type="submit" name="Submit" value="Submit" class="submit_btn"/>
+                </form:form>
+            </div>
+        </sec:authorize>
 
-
-            <form:form commandName="comment"
-                       action="/newcomment/${post.id}"
-                       method="POST">
-                <form:errors path="*" cssClass="errorblock" element="div" />
-                <div class="form_row">
-                    <label><strong>Name</strong> (required)</label>
-                    <br/>
-                    <form:input path="author"/>
-                </div>
-                <div class="form_row">
-                    <label><strong>Email</strong> (required, will not be published)</label>
-                    <br/>
-                    <form:input path="email"/>
-                </div>
-                <div class="form_row">
-                    <label><strong>Comment</strong></label>
-                    <br/>
-                    <form:textarea path="body" rows="10" cols="60"/>
-                </div>
-                <input type="submit" name="Submit" value="Submit" class="submit_btn"/>
-            </form:form>
-
-        </div>
+        <sec:authorize access="isAnonymous()">
+            <h3>Please login to leave a comment</h3>
+        </sec:authorize>
 
         <div class="cleaner"></div>
     </div>

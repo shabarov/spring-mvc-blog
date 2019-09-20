@@ -3,6 +3,8 @@ package ru.shabarov.blog.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ public class PostLikeController {
     @Autowired
     private PostLikesService postLikesService;
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.POST, value = "/create/post/{postId}")
     public String createLike(@PathVariable("postId") String postId) {
         logger.info("Create like");
@@ -26,6 +29,7 @@ public class PostLikeController {
         return "redirect:/post/" + postId;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.POST, value = "/delete/post/{postId}")
     public String deleteLike(@PathVariable("postId") String postId) {
         logger.info("Delete like");
