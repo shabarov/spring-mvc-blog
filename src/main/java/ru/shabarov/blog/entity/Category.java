@@ -1,13 +1,17 @@
 package ru.shabarov.blog.entity;
 
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "categories")
-public class Category {
+@Proxy(lazy=false)
+public class Category implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,16 +1,20 @@
 package ru.shabarov.blog.entity;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Objects;
 import java.util.Set;
 
+@Proxy(lazy=false) //TODO: workaround to avoid org.hibernate.LazyInitializationException within calls of PostExportService
 @Entity
 @Table(name = "posts")
-public class Post {
+public class Post implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -69,12 +69,24 @@
         <property name="maxUploadSize" value="500000"/>
     </bean>
 
+    <bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+        <property name="service" ref="postExportServiceImpl"/>
+        <property name="serviceName" value="PostExportService"/>
+        <property name="serviceInterface" value="ru.shabarov.blog.rmi.PostExportService"/>
+        <!--<property name="registryPort" value="1199"/>-->
+    </bean>
+
+    <bean id="postExportServiceClient" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+        <property name="serviceUrl" value="rmi://localhost/PostExportService"/>
+        <property name="serviceInterface" value="ru.shabarov.blog.rmi.PostExportService"/>
+    </bean>
+
     <context:component-scan base-package="ru.shabarov.blog.dao"/>
     <context:component-scan base-package="ru.shabarov.blog.service"/>
     <context:component-scan base-package="ru.shabarov.blog.beanlifecycle"/>
     <context:component-scan base-package="ru.shabarov.blog.event"/>
     <context:component-scan base-package="ru.shabarov.blog.config"/>
-    <context:component-scan base-package="ru.shabarov.blog.image"/>
+    <context:component-scan base-package="ru.shabarov.blog.rmi"/>
 
     <aop:aspectj-autoproxy />
 </beans>

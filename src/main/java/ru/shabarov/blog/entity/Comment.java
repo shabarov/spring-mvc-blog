@@ -1,6 +1,9 @@
 package ru.shabarov.blog.entity;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -8,7 +11,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "comments")
-public class Comment {
+@Proxy(lazy=false)
+public class Comment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
