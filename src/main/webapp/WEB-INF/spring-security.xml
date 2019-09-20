@@ -41,6 +41,8 @@
                     authentication-failure-url="/loginfailed"/>
         <logout logout-success-url="/logout"/>
 
+        <remember-me key="blogKey" token-validity-seconds="300"/>
+
     </http>
 
 <!--    <authentication-manager>
