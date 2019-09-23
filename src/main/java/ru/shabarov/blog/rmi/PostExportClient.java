@@ -8,11 +8,10 @@ import org.springframework.stereotype.Service;
 import ru.shabarov.blog.entity.Post;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Service
 public class PostExportClient {
@@ -23,11 +22,13 @@ public class PostExportClient {
     @Qualifier("postExportServiceClient")
     private PostExportService postExportService;
 
+    private ScheduledExecutorService executorService;
+
     @PostConstruct
     public void init() {
         logger.info("PostExportClient init");
-        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(new Runnable() {
+        executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 logger.info("PostExportClient running");
@@ -37,4 +38,8 @@ public class PostExportClient {
         }, 0, 10, TimeUnit.SECONDS);
     }
 
+    @PreDestroy
+    public void clean() {
+        executorService.shutdown();
+    }
 }
