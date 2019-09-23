@@ -74,6 +74,17 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <!-- Workaround to allow PUT, DELETE, ... methods-->
+    <filter>
+        <filter-name>hiddenHttpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>hiddenHttpMethodFilter</filter-name>
+        <servlet-name>dispatcher</servlet-name>
+    </filter-mapping>
+
     <session-config>
         <session-timeout>1</session-timeout>
     </session-config>

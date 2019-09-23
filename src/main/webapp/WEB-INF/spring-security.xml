@@ -34,6 +34,8 @@
 
         <intercept-url pattern="/newcomment/*" access="isAuthenticated()"/>
 
+        <intercept-url pattern="/rest/post/*" access="permitAll"/>
+
 <!--        <intercept-url pattern="/like/*" access="isAuthenticated()"/>-->
 
         <form-login login-page="/login"

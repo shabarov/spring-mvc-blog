@@ -1,5 +1,6 @@
 package ru.shabarov.blog.entity;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Proxy(lazy=false) //TODO: workaround to avoid org.hibernate.LazyInitializationException within calls of PostExportService
 @Entity
 @Table(name = "posts")
+@JsonIgnoreProperties(value = { "category", "comments"})
 public class Post implements Serializable {
 
     @Id

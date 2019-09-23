@@ -1,6 +1,7 @@
 package ru.shabarov.blog.entity;
 
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
