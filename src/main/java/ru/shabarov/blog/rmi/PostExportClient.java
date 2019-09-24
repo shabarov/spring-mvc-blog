@@ -5,19 +5,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
+import org.springframework.jmx.export.annotation.ManagedNotification;
 import org.springframework.jmx.export.annotation.ManagedResource;
+import org.springframework.jmx.export.notification.NotificationPublisher;
+import org.springframework.jmx.export.notification.NotificationPublisherAware;
 import org.springframework.stereotype.Service;
 import ru.shabarov.blog.entity.Post;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.management.Notification;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.*;
 
 @Service
 @ManagedResource(objectName="blog:name=PostExportClient")
-public class PostExportClient {
+@ManagedNotification(notificationTypes = "PostNotifier.MessageChange", name = "MessageChange")
+public class PostExportClient implements NotificationPublisherAware {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -26,6 +31,8 @@ public class PostExportClient {
     private PostExportService postExportService;
 
     private ScheduledExecutorService executorService;
+
+    private NotificationPublisher notificationPublisher;
 
     private String message = "Default message";
 
@@ -56,6 +63,24 @@ public class PostExportClient {
 
     @ManagedAttribute
     public void setMessage(String message) {
+        // jconsole -> mbean tab -> choose this mbean -> notifications -> click subscribe -> setMessage
+        notificationPublisher.sendNotification(buildNotification(message));
         this.message = message;
+    }
+
+    private Notification buildNotification(final String message)
+    {
+        final Notification notification = new Notification("PostNotifier.MessageChange",
+                        this,
+                        0,
+                        System.currentTimeMillis(),
+                        "Set a new message = " + message);
+        notification.setUserData("Blog user data");
+        return notification;
+    }
+
+    @Override
+    public void setNotificationPublisher(NotificationPublisher notificationPublisher) {
+        this.notificationPublisher = notificationPublisher;
     }
 }

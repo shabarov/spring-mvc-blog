@@ -103,6 +103,18 @@
 <!--    <context:mbean-server>-->
 <!--    </context:mbean-server>-->
 
+    <bean id="registry" class="org.springframework.remoting.rmi.RmiRegistryFactoryBean">
+        <property name="port" value="1099"/>
+    </bean>
+
+    <bean id="serverConnector"
+          class="org.springframework.jmx.support.ConnectorServerFactoryBean"
+          depends-on="registry">
+        <property name="objectName" value="connector:name=rmi"/>
+        <property name="serviceUrl"
+                  value="service:jmx:rmi://localhost/jndi/rmi://localhost:1099/jmxrmi"/>
+    </bean>
+
     <context:mbean-export/>
 
     <context:component-scan base-package="ru.shabarov.blog.dao"/>
