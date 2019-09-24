@@ -82,12 +82,36 @@
 
     <bean class="org.springframework.remoting.jaxws.SimpleJaxWsServiceExporter"/>
 
+<!--    <bean id="mbeanExporter" class="org.springframework.jmx.export.MBeanExporter">-->
+<!--        <property name="beans">-->
+<!--            <map>-->
+<!--                <entry key="blog:name=PostExportClient" value-ref="postExportClient"/>-->
+<!--            </map>-->
+<!--        </property>-->
+<!--&lt;!&ndash;        <property name="server" ref="mbeanServer"/>&ndash;&gt;-->
+<!--        <property name="assembler" ref="assembler"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="assembler" class="org.springframework.jmx.export.assembler.MethodNameBasedMBeanInfoAssembler">-->
+<!--        <property name="managedMethods" value="getMessage,setMessage"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="assembler" class="org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler">-->
+<!--        <property name="managedInterfaces" value="ru.shabarov.blog.rmi.PostExportClientManagedOperations"/>-->
+<!--    </bean>-->
+
+<!--    <context:mbean-server>-->
+<!--    </context:mbean-server>-->
+
+    <context:mbean-export/>
+
     <context:component-scan base-package="ru.shabarov.blog.dao"/>
     <context:component-scan base-package="ru.shabarov.blog.service"/>
     <context:component-scan base-package="ru.shabarov.blog.beanlifecycle"/>
     <context:component-scan base-package="ru.shabarov.blog.event"/>
     <context:component-scan base-package="ru.shabarov.blog.config"/>
     <context:component-scan base-package="ru.shabarov.blog.rmi"/>
+
 
     <aop:aspectj-autoproxy />
 </beans>

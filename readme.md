@@ -60,3 +60,12 @@ start/stop:
 sudo service mysql stop
 sudo service mysql restart
 sudo service mysql start
+
+JMX:
+$JAVA_HOME/bin/jconsole -J-Djava.class.path=$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/jconsole.jar:/opt/wildfly-8.2.0.Final/bin/client/jboss-client.jar
+(../jboss-client.jar OR ../jboss-cli-client.jar)
+service:jmx:http-remoting-jmx://localhost:9990
+
+ActiveMQ:
+/var/lib/activemq/bin/artemis run
+/var/lib/activemq/bin/artemis stop
